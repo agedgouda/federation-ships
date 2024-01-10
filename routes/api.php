@@ -27,7 +27,7 @@ Route::prefix('ships')->group(function () {
     Route::controller(ShipController::class)->group(function () {
         Route::get('/','index');
         Route::get('/ship/{id}', 'show');
-        Route::post('/{id}', 'store');
+        Route::post('/', 'store');
         Route::put('/{id}', 'update');
         Route::get('/faction/{id}', 'getFactionShips');
         Route::get('/class','classIndex');

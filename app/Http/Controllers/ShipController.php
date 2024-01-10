@@ -24,8 +24,26 @@ class ShipController extends Controller
      */
     public function store(Request $request)
     {
-        $ship = Ship::create($request->all());
-        return response()->json($ship);
+        $ship = Ship::with('weapons')->findOrFail($request->ship_class_id);
+        unset($ship->created_at);
+        unset($ship->updated_at);
+        unset($ship->id);
+        $ship->name = $request->name;
+        $ship->ship_class_id = $request->ship_class_id;
+        $ship->registry = $request->registry;
+
+        //$weapons = $ship->weapons();
+        //unset($ship->weapons);
+
+        foreach ($ship->weapons as $weapon) {
+            echo "{$weapon->pivot}<br>";
+            //echo "Weapon ID: {$weapon->id}<br>";
+            //echo "Arc: {$weapon->pivot->arc}<br>"; // Access pivot data
+            //echo "Location: {$weapon->pivot->location}<br><br>";
+        }
+        //$newShip = Ship::create($ship->toArray());
+        //$newShip->weapons()->attach($weapons);
+        return response()->json($weapon);
     }    
     
     /**
