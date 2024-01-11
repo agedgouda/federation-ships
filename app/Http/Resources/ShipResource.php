@@ -28,6 +28,7 @@ class ShipResource extends JsonResource
             'faction_logo' => $faction->logo_url,
             'registry' => $this->registry,
             'faction_identifier' => $faction->identifier,
+            'registry_stub' => $faction->registry_stub,
             'ship_image_url' => $this->ship_image_url,
             'ship_counter_url' => $this->ship_counter_url,
             'type' => $this->shipType->name,

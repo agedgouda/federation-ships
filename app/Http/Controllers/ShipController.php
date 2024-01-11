@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ship;
 use App\Http\Resources\ShipResource;
+use Carbon\Carbon;
 
 class ShipController extends Controller
 {
@@ -24,7 +25,9 @@ class ShipController extends Controller
      */
     public function store(Request $request)
     {
+        $today = Carbon::now();
         $ship = Ship::with('weapons')->findOrFail($request->ship_class_id);
+        
         unset($ship->created_at);
         unset($ship->updated_at);
         unset($ship->id);
@@ -32,18 +35,18 @@ class ShipController extends Controller
         $ship->ship_class_id = $request->ship_class_id;
         $ship->registry = $request->registry;
 
-        //$weapons = $ship->weapons();
-        //unset($ship->weapons);
+        //$newShip = Ship::findOrFail(2);
+        $weapons = $ship->weapons;
+        unset($ship->weapons);
+        $newShip = Ship::create($ship->toArray());
+                
+        foreach ($weapons as $shipWeapon) {
+            $weaponData = ['created_at'=>$today,'updated_at'=>$today,'arc'=> $shipWeapon->pivot->arc,'location'=> $shipWeapon->pivot->location];
+            $newShip->weapons()->attach( $shipWeapon->pivot->weapon_id, $weaponData);
 
-        foreach ($ship->weapons as $weapon) {
-            echo "{$weapon->pivot}<br>";
-            //echo "Weapon ID: {$weapon->id}<br>";
-            //echo "Arc: {$weapon->pivot->arc}<br>"; // Access pivot data
-            //echo "Location: {$weapon->pivot->location}<br><br>";
         }
-        //$newShip = Ship::create($ship->toArray());
-        //$newShip->weapons()->attach($weapons);
-        return response()->json($weapon);
+        $ship = Ship::with('weapons')->findOrFail($newShip->id);
+        return response()->json($ship);
     }    
     
     /**
