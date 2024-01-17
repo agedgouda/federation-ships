@@ -15,9 +15,11 @@ class WeaponResource extends JsonResource
     public function toArray(Request $request): array
     {
         $data = [
+            'id' => $this->id,
             'type' => $this->type,
             'name' => $this->name,
             'energy_cost' => $this->energy_cost,
+            'arm_rounds' => $this->arm_rounds,
         ];
 
         // Check if pivot data is available
