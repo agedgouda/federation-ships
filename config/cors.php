@@ -19,8 +19,8 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'),'http://localhost:5173','https://4b9c-47-232-180-221.ngrok-free.app','http://127.0.0.1:8001'],
-
+    'allowed_origins' => ['*'],
+    
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
